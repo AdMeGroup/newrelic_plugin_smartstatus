@@ -4,6 +4,7 @@ require "rubygems"
 require "bundler/setup"
 
 require "newrelic_plugin"
+require "smart_status"
 
 module SMARTStatusAgent
 
@@ -14,11 +15,18 @@ module SMARTStatusAgent
     agent_config_options :hostname, :drives, :report_old_age
     agent_human_labels("S.M.A.R.T. status") { "S.M.A.R.T. status for #{hostname}" }
 
+    def setup_metrics
+      @drive_processor = {}
+      drives.each do |drive|
+        @drive_processor[drive] = SMARTStatus::Parser.new(drive)
+      end
+    end
+
     def poll_cycle
       drives.each do |drive|
-        smart_data(drive).each do |data|
-          if report_old_age || data[:type] != :oldage
-            report_metric format_metric_name(data), "Value", get_value(data)
+        @drive_processor[drive].process.each do |metric_name,data|
+          if report_old_age || data.type != :oldage
+            report_metric format_metric_name(metric_name), "Value", data.value
           end
         end
       end
@@ -26,38 +34,8 @@ module SMARTStatusAgent
 
   private
 
-    ### FIXME: stub
-    def smart_data(drive)
-      [
-        {
-          :name => "Raw_Read_Error_Rate",
-          :value => 100,
-          :worst => 100,
-          :threshold => 62,
-          :raw_value => 0,
-          :type => :prefail
-        },
-        {
-          :name => "Start_Stop_Count",
-          :value => 100,
-          :worst => 100,
-          :threshold => 0,
-          :raw_value => 338,
-          :type => :oldage
-        },
-      ]
-    end
-
-    def get_value(data)
-      case data[:type]
-      when :prefail then data[:value]
-      when :oldage then data[:raw_value]
-      else :data[:value]
-      end
-    end
-
-    def format_metric_name(data)
-      "#{hostname}/#{data[:name]}"
+    def format_metric_name(metric_name)
+      "#{hostname}/S.M.A.R.T/#{metric_name}"
     end
   end
 

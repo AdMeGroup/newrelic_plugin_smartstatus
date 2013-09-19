@@ -6,16 +6,19 @@ newrelic:
   #
   # Update with your New Relic account license key:
   #
-  license_key: 'YOUR_LICENSE_KEY_HERE'
+  license_key: 'YOUR LICENSE KEY HERE'
   #
   # Set to '1' for verbose output, remove for normal output.
   # All output goes to stdout/stderr.
   #
   # verbose: 1
+
 #
 # Agent Configuration:
 #
 agents:
   # this is where configuration for agents belongs
-  example:
-    hertz: 1000
+  smartstatus:
+    hostname: your.host.name
+    drives: ["/dev/sda1"]
+    report_old_age: true
