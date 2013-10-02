@@ -1,2 +1,4 @@
 /Gemfile.lock
 /config/newrelic_plugin.yml
+/.bundle
+/vendor/bundle
