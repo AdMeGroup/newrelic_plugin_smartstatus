@@ -20,5 +20,7 @@ agents:
   # this is where configuration for agents belongs
   smartstatus:
     hostname: your.host.name
-    drives: ["/dev/sda1"]
+    drives: 
+    - /dev/sda
+    - /dev/sdb
     report_old_age: true
