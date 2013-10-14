@@ -25,7 +25,7 @@ module SMARTStatusAgent
     def poll_cycle
       drives.each do |drive|
         @drive_processor[drive].process.each do |metric,data|
-          if report_old_age || data.old_age?
+          if report_old_age || !data.old_age?
             report_metric format_metric_name(drive,data.formatted_name), data.unit, data.value
           end
         end
