@@ -1,9 +1,15 @@
-## Example Agent Install
+## S.M.A.R.T. HDD Status NewRelic plugin
 
-1. Download the latest tagged version from `https://github.com/newrelic-platform/newrelic_example_plugin/tags`
-2. Extract to the location you want to run the example agent from
-3. Copy `config/template_newrelic_plugin.yml` to `config/newrelic_plugin.yml`
-4. Edit `config/newrelic_plugin.yml` and replace "YOUR_LICENSE_KEY_HERE" with your New Relic license key
-5. Create a plugin in New Relic
-6. Edit `newrelic_example_agent` and replace "PUT YOUR GUID HERE" with the GUID that was generated when you created the plugin
-7. run `./newrelic_example_agent`
+This plugin sends S.M.A.R.T. metrics to NewRelic.
+
+#### Installation
+
+1. Copy `config/template_newrelic_plugin.yml` to `config/newrelic_plugin.yml`
+2. Edit `config/newrelic_plugin.yml` and replace the values:
+  * 'YOUR_LICENSE_KEY_HERE' with your New Relic license key
+  * `your.host.name` with your host name
+  * `drives` parameter with a list of drives to process
+  * set `report_old_age` to true if you want to send "Old age" type attributes to NewRelic
+3. Create a plugin in New Relic
+4. run `./newrelic_smartstatus_agent`
+
