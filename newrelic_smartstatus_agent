@@ -25,13 +25,18 @@ module SMARTStatusAgent
     end
 
     def poll_cycle
+      worst_value = 100
       drives.each do |drive|
         @drive_processor[drive].process.each do |metric,data|
           if report_old_age || !data.old_age?
             report_metric format_metric_name(drive,data.formatted_name), data.unit, data.value
           end
+          if !data.old_age? && data.value < worst_value
+            worst_value = data.value
+          end
         end
       end
+      report_metric "Minimum overall health", "% health", worst_value
     end
 
   private
