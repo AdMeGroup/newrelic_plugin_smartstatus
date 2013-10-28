@@ -36,7 +36,7 @@ module SMARTStatusAgent
 
     def format_metric_name(drive,metric_name)
       drive = drive.gsub( /\/dev\//,'')
-      "S.M.A.R.T/#{drive}/#{metric_name}"
+      "S.M.A.R.T/#{metric_name}/#{drive}"
     end
   end
 
