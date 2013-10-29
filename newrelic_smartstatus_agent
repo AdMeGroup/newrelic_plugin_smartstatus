@@ -36,7 +36,7 @@ module SMARTStatusAgent
           end
         end
       end
-      report_metric "Minimum overall health", "% health", worst_value
+      report_metric "Max overall failure rate", "%", (100 - worst_value)
     end
 
   private
