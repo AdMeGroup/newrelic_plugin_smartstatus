@@ -36,7 +36,7 @@ module SMARTStatusAgent
           end
         end
       end
-      report_metric "Max overall failure rate", "%", (100 - worst_value)
+      report_metric "S.M.A.R.T/Max overall failure rate", "%", (100 - worst_value)
     end
 
   private
