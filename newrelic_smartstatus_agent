@@ -12,8 +12,8 @@ module SMARTStatusAgent
 
     DEFAULT_GUID = "com.erthad.smartstatus"
 
-    agent_version "1.0.1"
-    agent_config_options :plugin_guid, :hostname, :drives, :report_old_age
+    agent_version "1.0.2"
+    agent_config_options :plugin_guid, :hostname, :drives
     agent_human_labels("S.M.A.R.T. status") { hostname.to_s }
 
     def setup_metrics
@@ -28,9 +28,7 @@ module SMARTStatusAgent
       worst_value = 100
       drives.each do |drive|
         @drive_processor[drive].process.each do |metric,data|
-          if report_old_age || !data.old_age?
-            report_metric format_metric_name(drive,data.formatted_name), data.unit, data.value
-          end
+          report_metric format_metric_name(drive, data.formatted_name, data.old_age?), data.unit, data.value
           if !data.old_age? && data.value < worst_value
             worst_value = data.value
           end
@@ -41,9 +39,10 @@ module SMARTStatusAgent
 
   private
 
-    def format_metric_name(drive,metric_name)
+    def format_metric_name(drive, metric_name, old_age)
       drive = drive.gsub( /\/dev\//,'')
-      "S.M.A.R.T/#{metric_name}/#{drive}"
+      type = old_age ? "Old age" : "Pre-fail"
+      "S.M.A.R.T/#{type}/#{metric_name}/#{drive}"
     end
   end
 
